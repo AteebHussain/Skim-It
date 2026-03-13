@@ -1,6 +1,5 @@
 import { google } from '@ai-sdk/google';
 import { streamObject } from 'ai';
-import { auth } from '@clerk/nextjs/server';
 import { fetchArticleContent } from '@/lib/fetcher';
 import { briefSchema } from '@/lib/schemas';
 import { SYSTEM_PROMPT } from '@/lib/prompts';
@@ -10,13 +9,7 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
-    // 1. Auth Check
-    const { userId } = await auth();
-    if (!userId) {
-      return new Response('Unauthorized', { status: 401 });
-    }
-
-    // 2. Parse and Validate Input
+    // 1. Parse and Validate Input
     const { url } = await req.json();
     if (!url || typeof url !== 'string') {
       return new Response('Invalid URL', { status: 400 });
