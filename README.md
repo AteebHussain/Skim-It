@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkimIt
+
+Paste any URL — article, blog post, research paper, docs — and get back a beautifully animated visual brief instead of a wall of text. Cards deal in one by one as Gemini streams the analysis. Built for people who read too much internet.
+
+**[Try it live →](#)**
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Gemini](https://img.shields.io/badge/Gemini-AI-orange?logo=google)
+
+## Features
+
+- **Paste & go** — drop any URL, get a structured visual digest in seconds
+- **Streaming card animation** — headline, insights, sentiment, difficulty, and verdict animate in sequentially as Gemini streams
+- **Content-type theming** — card colors adapt based on article type (news, tutorial, research, docs)
+- **Key insights** — the 3 most important takeaways, distilled
+- **Sentiment & difficulty** — instant read on tone and complexity
+- **"Worth your time?" verdict** — a bottom-line call: Worth It, Skim It, or Skip It
+- **Brief archive** — saved briefs persist in localStorage so you can revisit past reads
+- **Dark theme** — sleek dark UI with glassmorphism cards
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js 14 | React framework with App Router |
+| TypeScript | Type safety across the codebase |
+| Tailwind CSS v4 | Utility-first styling |
+| Framer Motion | Card entrance animations |
+| Google Gemini | AI analysis via streaming |
+| Vercel AI SDK | Streaming response helpers |
+| Cheerio | HTML parsing for URL content extraction |
+| Clerk | Authentication |
+| Vercel | Hosting and deployment |
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/AteebHussain/skimit.git
+cd skimit
+npm install
+```
+
+### 2. Set up environment
+
+Get API keys from [Google AI Studio](https://aistudio.google.com) and [Clerk](https://clerk.com).
+
+```bash
+cp .env.example .env.local
+# Then paste your keys in .env.local
+```
+
+### 3. Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | Yes | Google AI Studio API key |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk publishable key |
+| `CLERK_SECRET_KEY` | Yes | Clerk secret key |
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
