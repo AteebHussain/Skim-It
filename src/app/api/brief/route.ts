@@ -33,9 +33,8 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('[API/Brief] Error:', error);
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
-    return new Response(JSON.stringify({ error: message }), {
+    return new Response(message, {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
     });
   }
 }

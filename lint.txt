@@ -1,0 +1,21 @@
+
+C:\Users\Ateeb\Documents\Projects\skimit\src\hooks\use-brief-stream.ts
+  16:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ateeb\Documents\Projects\skimit\src\hooks\use-brief-stream.ts:16:7
+  14 |   useEffect(() => {
+  15 |     if (isLoading) {
+> 16 |       setPhase('streaming');
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  17 |     } else if (object) {
+  18 |       setPhase('complete');
+  19 |     } else if (streamError) {  react-hooks/set-state-in-effect
+
+??? 1 problem (1 error, 0 warnings)
+

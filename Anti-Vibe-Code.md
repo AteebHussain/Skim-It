@@ -133,6 +133,9 @@ If Gemini takes more than 15 seconds to return its first chunk, the user needs f
 
 ## 5. UI and Visual Polish
 
+### Always follow Shadcn for UI/UX
+While we may not install the Shadcn components over-the-counter, the UX patterns, spacing, and interaction principles defined at [ui.shadcn.com](https://ui.shadcn.com/) are the gold standard. Use them as reference for every component.
+
 ### Spacing must be consistent
 You are using Tailwind's spacing scale. Stick to it. Do not mix `p-5`, `p-[18px]`, and `padding: 16px` for the same type of element. Define the system and apply it without exceptions.
 
@@ -235,12 +238,15 @@ This is visible to every recruiter who clicks your GitHub.
 
 ### Commit messages tell a story
 
+Git commits should read like commands to the codebase in plain, capitalized text, describing what was done concisely without arbitrary semantic prefixes perfectly.
+
 ```
 ✅ Added streaming brief generation with Gemini
 ✅ Fixed Jina Reader fallback when primary fetch is blocked
 ✅ Refactored URL content parser into standalone module
 ✅ Styled content-type color theming to headline cards
 
+❌ "feat: add streaming"
 ❌ "fix stuff"
 ❌ "wip"
 ❌ "changes"
