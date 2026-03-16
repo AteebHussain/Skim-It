@@ -24,41 +24,44 @@
 :root {
   --bg-primary: #000000;
   --bg-card: rgba(62, 54, 54, 0.4); /* #3E3636 with opacity for glassmorphism */
-  --accent: oklch(0.97 0 0);
+  --accent: #D72323;
   --text-primary: #F5EDED;
   --text-muted: rgba(245, 237, 237, 0.6); /* Derived from #F5EDED for readability */
   --border-muted: #3E3636;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+
+  /* Shadcn standard tokens mapped to the 4 colors */
+  --background: #000000;
+  --foreground: #F5EDED;
+  --card: #000000;
+  --card-foreground: #F5EDED;
+  --popover: #000000;
+  --popover-foreground: #F5EDED;
+  --primary: #D72323;
+  --primary-foreground: #F5EDED;
+  --secondary: #3E3636;
+  --secondary-foreground: #F5EDED;
+  --muted: #3E3636;
+  --muted-foreground: rgba(245, 237, 237, 0.6);
+  --destructive: #ee4444;
+  --destructive-foreground: #F5EDED;
+  --border: #3E3636;
+  --input: #3E3636;
+  --ring: #D72323;
+
   --chart-1: oklch(0.809 0.105 251.813);
   --chart-2: oklch(0.623 0.214 259.815);
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #000000;
+  --sidebar-foreground: #F5EDED;
+  --sidebar-primary: #D72323;
+  --sidebar-primary-foreground: #F5EDED;
+  --sidebar-accent: #3E3636;
+  --sidebar-accent-foreground: #F5EDED;
+  --sidebar-border: #3E3636;
+  --sidebar-ring: #D72323;
 }
 
 * {
@@ -68,8 +71,8 @@
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -102,37 +105,24 @@ body {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #000000;
+  --foreground: #F5EDED;
+  --card: #000000;
+  --card-foreground: #F5EDED;
+  --popover: #000000;
+  --popover-foreground: #F5EDED;
+  --primary: #D72323;
+  --primary-foreground: #F5EDED;
+  --secondary: #3E3636;
+  --secondary-foreground: #F5EDED;
+  --muted: #3E3636;
+  --muted-foreground: rgba(245, 237, 237, 0.6);
+  --accent: #D72323;
+  --accent-foreground: #F5EDED;
+  --destructive: #ee4444;
+  --border: #3E3636;
+  --input: #3E3636;
+  --ring: #D72323;
 }
 
 @layer base {

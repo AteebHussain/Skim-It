@@ -15,20 +15,20 @@ export default function Home() {
   const { streamBrief, phase, data, error } = useBriefStream();
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-24 pb-32 px-4 selection:bg-accent/30">
+    <div className="min-h-screen flex flex-col items-center pt-24 pb-32 px-4 selection:bg-primary/30">
       <header className="mb-16 text-center space-y-4">
         <motion.h1 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-black tracking-tighter text-white"
+          className="text-5xl font-black tracking-tighter text-foreground"
         >
-          SKIM<span className="text-accent underline decoration-4 underline-offset-8">IT</span>
+          SKIM<span className="text-primary underline decoration-4 underline-offset-8">IT</span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-zinc-500 font-medium"
+          className="text-muted-foreground font-medium"
         >
           Paste any link. Get the absolute core in seconds.
         </motion.p>
@@ -46,7 +46,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center text-sm font-medium"
+              className="w-full p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-center text-sm font-medium shadow-sm"
             >
               {error}
             </motion.div>
@@ -57,7 +57,7 @@ export default function Home() {
               key="idle"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-zinc-600 font-medium text-center"
+              className="text-muted-foreground font-medium text-center"
             >
               Paste a URL above and watch the brief build itself.
             </motion.p>
@@ -73,7 +73,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-8 pt-8 border-t border-zinc-800/50">
+              <div className="flex flex-wrap items-center justify-between gap-8 pt-8 border-t border-border mt-8">
                 <div className="flex flex-col gap-6 flex-1">
                   <SentimentTag sentiment={data.sentiment} />
                   <DifficultyMeter level={data.difficulty} />
@@ -89,8 +89,8 @@ export default function Home() {
       </main>
 
       <footer className="fixed bottom-8 text-center">
-         <p className="text-zinc-700 text-[10px] font-bold uppercase tracking-[0.2em]">
-           Powered by Gemini 1.5 Flash • No filler engineering
+         <p className="text-muted-foreground/50 text-[10px] font-bold uppercase tracking-[0.2em]">
+           Powered by Gemini 2.5 Flash • No filler engineering
          </p>
       </footer>
     </div>

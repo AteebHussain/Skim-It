@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { InsightItem } from '@/lib/types';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface InsightCardProps {
   insight: InsightItem;
@@ -19,21 +20,26 @@ export const InsightCard: React.FC<InsightCardProps> = ({ insight, index }) => {
         delay: index * 0.15, // Staggered entry
         ease: 'easeOut' 
       }}
-      className="glass w-full rounded-2xl p-6 border-l-4 border-l-accent/50"
+      className="w-full"
     >
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-accent/20 text-accent text-xs font-bold">
-            {index + 1}
+      <Card className="rounded-2xl border-l-4 border-l-primary/50 bg-card border-border backdrop-blur-md shadow-lg">
+        <CardContent className="p-6">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold">
+                {index + 1}
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">
+                {insight.title}
+              </h3>
+            </div>
+            <p className="text-muted-foreground leading-relaxed text-sm">
+              {insight.content}
+            </p>
           </div>
-          <h3 className="text-lg font-semibold text-zinc-100">
-            {insight.title}
-          </h3>
-        </div>
-        <p className="text-zinc-400 leading-relaxed text-sm">
-          {insight.content}
-        </p>
-      </div>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 };
+

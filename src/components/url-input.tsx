@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Loader2, ArrowRight, LinkIcon } from 'lucide-react';
 
 interface UrlInputProps {
   onSubmit: (url: string) => void;
@@ -26,58 +29,36 @@ export const UrlInput: React.FC<UrlInputProps> = ({ onSubmit, isLoading }) => {
       onSubmit={handleSubmit}
       className="w-full max-w-2xl px-4"
     >
-      <div className="relative flex items-center gap-2 rounded-2xl bg-zinc-900/50 p-2 border border-zinc-800 focus-within:border-accent transition-all duration-300 shadow-2xl backdrop-blur-sm">
+      <div className="relative flex items-center gap-2 rounded-2xl bg-card p-2 border border-border focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all duration-300 shadow-2xl backdrop-blur-sm">
         <div className="flex-1 flex items-center pl-3">
-          <svg
-            className="w-5 h-5 text-zinc-500 mr-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-            />
-          </svg>
-          <input
+          <LinkIcon className="w-5 h-5 text-muted-foreground mr-3 shrink-0" />
+          <Input
             type="url"
             placeholder="Paste any URL — article, research, docs..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             disabled={isLoading}
-            className="w-full bg-transparent border-none outline-none text-zinc-100 placeholder:text-zinc-600 text-lg"
+            className="w-full bg-transparent border-0 shadow-none focus-visible:ring-0 text-foreground placeholder:text-muted-foreground text-lg h-12"
             required
           />
         </div>
-        <button
+        <Button
           type="submit"
           disabled={isLoading || !url.trim()}
-          className="group relative flex items-center gap-2 h-12 px-6 rounded-xl bg-accent text-white font-medium hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-500 transition-all duration-300"
+          className="group h-12 px-6 rounded-xl font-medium transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {isLoading ? (
-            <div className="flex items-center gap-2">
-              <svg className="animate-spin h-5 w-5 text-current" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
-              <span>Analyzing...</span>
-            </div>
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Analyzing...
+            </>
           ) : (
             <>
-              <span>Skim It</span>
-              <svg
-                className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
+              Skim It
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </>
           )}
-        </button>
+        </Button>
       </div>
     </motion.form>
   );

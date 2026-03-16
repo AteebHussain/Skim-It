@@ -3,15 +3,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Verdict } from '@/lib/types';
+import { Badge } from '@/components/ui/badge';
 
 interface VerdictBadgeProps {
   verdict?: Verdict;
 }
 
 const VERDICT_STYLES: Record<string, string> = {
-  'Worth It': 'bg-green-500 shadow-green-500/20',
-  'Skim It': 'bg-yellow-500 shadow-yellow-500/20',
-  'Skip It': 'bg-red-500 shadow-red-500/20',
+  'Worth It': 'bg-green-500 hover:bg-green-600 shadow-green-500/20',
+  'Skim It': 'bg-yellow-500 hover:bg-yellow-600 shadow-yellow-500/20 text-yellow-950',
+  'Skip It': 'bg-red-500 hover:bg-red-600 shadow-red-500/20',
 };
 
 export const VerdictBadge: React.FC<VerdictBadgeProps> = ({ verdict }) => {
@@ -27,9 +28,10 @@ export const VerdictBadge: React.FC<VerdictBadgeProps> = ({ verdict }) => {
         stiffness: 200,
         delay: 0.5
       }}
-      className={`px-6 py-3 rounded-full text-white font-black text-xl uppercase tracking-tighter shadow-2xl ${VERDICT_STYLES[verdict]}`}
     >
-      {verdict}
+      <Badge className={`px-6 py-2 rounded-full text-white font-black text-xl md:text-2xl uppercase tracking-tighter shadow-2xl border-none ${VERDICT_STYLES[verdict]}`}>
+        {verdict}
+      </Badge>
     </motion.div>
   );
 };
