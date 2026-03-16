@@ -18,12 +18,12 @@
 }
 
 :root {
-  --bg-primary: #09090b;
-  --bg-card: rgba(24, 24, 27, 0.4);
-  --accent: #3b82f6;
-  --text-primary: #fafafa;
-  --text-muted: #a1a1aa;
-  --border-muted: rgba(63, 63, 70, 0.4);
+  --bg-primary: #000000;
+  --bg-card: rgba(62, 54, 54, 0.4); /* #3E3636 with opacity for glassmorphism */
+  --accent: #D72323;
+  --text-primary: #F5EDED;
+  --text-muted: rgba(245, 237, 237, 0.6); /* Derived from #F5EDED for readability */
+  --border-muted: #3E3636;
 }
 
 * {

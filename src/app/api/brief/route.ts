@@ -20,10 +20,13 @@ export async function POST(req: Request) {
 
     // 4. Initialize Gemini Stream (Phase 3)
     const result = streamObject({
-      model: google('gemini-1.5-flash'),
+      model: google('gemini-2.5-flash'),
       schema: briefSchema,
       system: SYSTEM_PROMPT,
       prompt: `Analyze the following content and provide a visual brief:\n\n${content}`,
+      onFinish: (event) => {
+        console.log('[API/Brief] Stream finished. Usage:', event.usage);
+      },
     });
 
     return result.toTextStreamResponse();
