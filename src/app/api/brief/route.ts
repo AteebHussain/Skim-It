@@ -1,4 +1,4 @@
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamObject } from 'ai';
 import { fetchArticleContent } from '@/lib/fetcher';
 import { briefSchema } from '@/lib/schemas';
@@ -7,6 +7,10 @@ import { rateLimit } from '@/lib/limiter';
 
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60;
+
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 export async function POST(req: Request) {
   try {
@@ -17,8 +21,9 @@ export async function POST(req: Request) {
     }
 
     // 2. Rate Limiting (Simple IP-based)
-    const ip = req.headers.get('x-forwarded-for') || 'anonymous';
-    const limitResult = rateLimit(ip, 5, 60000); // 5 requests per minute
+    const forwarded = req.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0].trim() : 'anonymous';
+    const limitResult = rateLimit(ip, 10, 60000); // Increased to 10 for safety during testing
 
     if (!limitResult.success) {
       return new Response('Too many requests. Please try again in a minute.', { 
@@ -32,11 +37,13 @@ export async function POST(req: Request) {
     }
 
     // 3. Fetch Article Content (Phase 2)
-    const { content } = await fetchArticleContent(url);
+    console.log(`[API/Brief] Fetching content for: ${url}`);
+    const { content, source } = await fetchArticleContent(url);
+    console.log(`[API/Brief] Content fetched via ${source}. Length: ${content.length}`);
 
     // 4. Initialize Gemini Stream (Phase 3)
     const result = streamObject({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-1.5-flash'),
       schema: briefSchema,
       system: SYSTEM_PROMPT,
       prompt: `Analyze the following content and provide a visual brief:\n\n${content}`,
