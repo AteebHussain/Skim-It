@@ -62,9 +62,9 @@ export async function POST(req: Request) {
     console.log(`[API/Brief] Content fetched via ${source}. Length: ${content.length}`);
 
     // 4. Initialize Gemini Stream
-    console.log(`[API/Brief] Starting AI stream...`);
+    console.log(`[API/Brief] Starting AI stream with gemini-2.5-flash...`);
     const result = streamObject({
-      model: google('gemini-1.5-flash'),
+      model: google('gemini-2.5-flash'),
       schema: briefSchema,
       system: SYSTEM_PROMPT,
       prompt: `Analyze the following content and provide a visual brief:\n\n${content}`,
