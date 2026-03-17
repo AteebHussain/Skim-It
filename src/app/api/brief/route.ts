@@ -3,6 +3,7 @@ import { streamObject } from 'ai';
 import { fetchArticleContent } from '@/lib/fetcher';
 import { briefSchema } from '@/lib/schemas';
 import { SYSTEM_PROMPT } from '@/lib/prompts';
+import { rateLimit } from '@/lib/limiter';
 
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60;
@@ -13,6 +14,21 @@ export async function POST(req: Request) {
     const { url } = await req.json();
     if (!url || typeof url !== 'string') {
       return new Response('Invalid URL', { status: 400 });
+    }
+
+    // 2. Rate Limiting (Simple IP-based)
+    const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+    const limitResult = rateLimit(ip, 5, 60000); // 5 requests per minute
+
+    if (!limitResult.success) {
+      return new Response('Too many requests. Please try again in a minute.', { 
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': limitResult.limit.toString(),
+          'X-RateLimit-Remaining': limitResult.remaining.toString(),
+          'X-RateLimit-Reset': limitResult.reset.toString(),
+        }
+      });
     }
 
     // 3. Fetch Article Content (Phase 2)
