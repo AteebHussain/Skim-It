@@ -20,8 +20,11 @@ export const metadata: Metadata = {
   title: "SkimIt | Visual Briefs for the Internet",
   description: "Paste a URL and get a beautifully animated visual brief. Built for people who read too much internet.",
   icons: {
-    icon: [{ url: '/favicon.png', type: 'image/png' }],
-    shortcut: '/favicon.png',
+    icon: [
+      { url: '/favicon.ico', type: 'image/x-icon' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
     apple: '/favicon.png',
   },
 };
