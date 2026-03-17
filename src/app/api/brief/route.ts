@@ -9,23 +9,43 @@ import { rateLimit } from '@/lib/limiter';
 export const maxDuration = 60;
 
 const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY,
 });
 
 export async function POST(req: Request) {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+  console.log('[API/Brief] Request received');
+  
+  if (!apiKey) {
+    console.error('[API/Brief] CRITICAL: Missing API Key (GOOGLE_GENERATIVE_AI_API_KEY or GEMINI_API_KEY)');
+    return new Response('API Key not configured', { status: 500 });
+  }
+
   try {
     // 1. Parse and Validate Input
-    const { url } = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch (e) {
+      console.error('[API/Brief] Failed to parse JSON body');
+      return new Response('Invalid JSON', { status: 400 });
+    }
+
+    const { url } = body;
     if (!url || typeof url !== 'string') {
+      console.error('[API/Brief] Missing URL in body');
       return new Response('Invalid URL', { status: 400 });
     }
 
+    console.log(`[API/Brief] Processing URL: ${url}`);
+
     // 2. Rate Limiting (Simple IP-based)
     const forwarded = req.headers.get('x-forwarded-for');
-    const ip = forwarded ? forwarded.split(',')[0].trim() : 'anonymous';
-    const limitResult = rateLimit(ip, 10, 60000); // Increased to 10 for safety during testing
+    const ip = forwarded ? forwarded.split(',')[0].trim() : 'localhost';
+    const limitResult = rateLimit(ip, 15, 60000); 
 
     if (!limitResult.success) {
+      console.warn(`[API/Brief] Rate limit exceeded for IP: ${ip}`);
       return new Response('Too many requests. Please try again in a minute.', { 
         status: 429,
         headers: {
@@ -36,12 +56,13 @@ export async function POST(req: Request) {
       });
     }
 
-    // 3. Fetch Article Content (Phase 2)
-    console.log(`[API/Brief] Fetching content for: ${url}`);
+    // 3. Fetch Article Content
+    console.log(`[API/Brief] Fetching content...`);
     const { content, source } = await fetchArticleContent(url);
     console.log(`[API/Brief] Content fetched via ${source}. Length: ${content.length}`);
 
-    // 4. Initialize Gemini Stream (Phase 3)
+    // 4. Initialize Gemini Stream
+    console.log(`[API/Brief] Starting AI stream...`);
     const result = streamObject({
       model: google('gemini-1.5-flash'),
       schema: briefSchema,
@@ -50,14 +71,18 @@ export async function POST(req: Request) {
       onFinish: (event) => {
         console.log('[API/Brief] Stream finished. Usage:', event.usage);
       },
+      onError: (err) => {
+        console.error('[API/Brief] Stream error:', err);
+      }
     });
 
     return result.toTextStreamResponse();
   } catch (error) {
-    console.error('[API/Brief] Error:', error);
+    console.error('[API/Brief] Top-level Error:', error);
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
-    return new Response(message, {
+    return new Response(JSON.stringify({ error: message }), {
       status: 500,
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 }
