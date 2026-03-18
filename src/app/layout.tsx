@@ -17,7 +17,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "SkimIt | Visual Briefs for the Internet",
+  title: "SkimIt",
   description: "Paste a URL and get a beautifully animated visual brief. Built for people who read too much internet.",
   icons: {
     icon: [
