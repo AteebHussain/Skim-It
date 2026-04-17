@@ -34,7 +34,7 @@ const VERDICT_CONFIG: Record<string, { label: string; icon: string; color: strin
 
 export const VerdictBadge: React.FC<VerdictBadgeProps> = ({ verdict }) => {
   if (!verdict) return null;
-  const cfg = VERDICT_CONFIG[verdict];
+  const cfg = VERDICT_CONFIG[verdict as keyof typeof VERDICT_CONFIG] ?? VERDICT_CONFIG['Skim It'];
 
   return (
     <motion.div

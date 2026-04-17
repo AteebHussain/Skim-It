@@ -8,7 +8,66 @@ import {
   VerdictBadge
 } from '@/components/brief';
 import { useBriefStream } from '@/hooks/use-brief-stream';
+import { InsightItem } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// ── Global Error Boundary ──────────────────────────────────────────────────
+// Catches any unhandled render error and shows a graceful fallback instead
+// of the Next.js blank crash page.
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; message: string }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, message: '' };
+  }
+
+  static getDerivedStateFromError(error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+    return { hasError: true, message };
+  }
+
+  componentDidCatch(error: unknown, info: React.ErrorInfo) {
+    console.error('[ErrorBoundary] Caught render error:', error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          minHeight: '100vh', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          background: '#0A0A0A', color: '#F0F0F0', gap: '16px',
+          fontFamily: 'system-ui, sans-serif', padding: '32px',
+          textAlign: 'center',
+        }}>
+          <div style={{
+            width: '48px', height: '48px', borderRadius: '12px',
+            background: 'rgba(230,57,70,0.12)', border: '1px solid rgba(230,57,70,0.25)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '22px',
+          }}>✕</div>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Something went wrong</h2>
+          <p style={{ color: '#666', fontSize: '0.9rem', maxWidth: '400px', margin: 0 }}>
+            {this.state.message}
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, message: '' })}
+            style={{
+              marginTop: '8px', padding: '10px 24px', borderRadius: '10px',
+              background: '#E63946', border: 'none', color: '#fff',
+              fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer',
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 
 // ── Inline tooltip component ──
@@ -62,7 +121,7 @@ const InfoTooltip = ({ text }: { text: string }) => {
 };
 
 
-export default function Home() {
+function Home() {
   const { streamBrief, phase, data, error } = useBriefStream();
   const isDashboard = phase === 'streaming' || phase === 'complete' || (phase === 'fetching' && !!data);
 
@@ -181,9 +240,10 @@ export default function Home() {
     flexDirection: 'column',
     gap: '10px',
   }}>
-    {(data.insights ?? [{}, {}, {}]).map((insight: any, idx: number) => (
+    {(data.insights ?? [{}, {}, {}] as Partial<InsightItem>[]).map((insight, idx: number) => (
       <div key={idx} style={{ flex: '1 1 0%', minHeight: 0 }}>
-        <InsightCard insight={insight} index={idx} compact />
+        {/* insight may be undefined/partial mid-stream; InsightCard handles missing title as skeleton */}
+        <InsightCard insight={(insight ?? {}) as InsightItem} index={idx} compact />
       </div>
     ))}
   </div>
@@ -401,5 +461,14 @@ export default function Home() {
 
       {!isDashboard && <footer className="absolute bottom-8 w-full text-center" />}
     </div>
+  );
+}
+
+// ── Default export wrapped in error boundary ──────────────────────────────
+export default function HomeWithBoundary() {
+  return (
+    <ErrorBoundary>
+      <Home />
+    </ErrorBoundary>
   );
 }
